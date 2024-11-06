@@ -1,25 +1,39 @@
-interface FilterMenuProps {
-  pavilhoes: string[];
-  selectedPavilhao: string;
-  onPavilhaoChange: (pavilhao: string) => void;
+// components/FilterMenu.tsx
+import React from 'react';
+
+interface Pavilhao {
+  pavilhao: string;
+  salas: Array<{
+    id: number;
+    nome: string;
+    andar: number;
+    status_atual: boolean;
+  }>;
 }
 
-export function FilterMenu({ pavilhoes, selectedPavilhao, onPavilhaoChange }: FilterMenuProps) {
+interface FilterMenuProps {
+  pavilhoes: Pavilhao[];
+  onSelectPavilhao: (pavilhao: Pavilhao) => void;
+}
+
+export const FilterMenu: React.FC<FilterMenuProps> = ({ pavilhoes, onSelectPavilhao }) => {
   return (
-    <div className="w-1/4 bg-gray-100 h-full p-4 overflow-y-auto">
-      <h2 className="text-lg font-bold mb-4">Filtrar Pavilhões</h2>
+    <div className="w-1/4 bg-gray-200 h-full p-4 overflow-y-auto">
+      <h2 className="text-lg font-bold mb-4">Pavilhões</h2>
       <ul>
         {pavilhoes.map((pavilhao) => (
-          <li key={pavilhao}>
+          <li 
+            className="bg-gray-100 my-4 rounded-lg" 
+            key={pavilhao.pavilhao}>
             <button
-              className={`w-full text-left p-2 mb-2 ${selectedPavilhao === pavilhao ? 'bg-gray-300' : 'bg-white'}`}
-              onClick={() => onPavilhaoChange(pavilhao)}
-            >
-              {pavilhao}
+              className="w-full text-left p-3 mb-2 flex rounded-lg hover:bg-gray-50"
+              onClick={() => onSelectPavilhao(pavilhao)}>
+              {pavilhao.pavilhao}
             </button>
+          
           </li>
         ))}
       </ul>
     </div>
   );
-}
+};
