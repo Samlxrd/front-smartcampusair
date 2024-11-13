@@ -1,13 +1,8 @@
 // components/SalaList.tsx
 import React from 'react';
 import { StatusDot } from './ui/status-dot';
-
-interface Sala {
-  id: number;
-  nome: string;
-  andar: number;
-  status_atual: boolean;
-}
+import AutomaticModeButton from './change-mode-button';
+import { Sala } from '../api/sala';
 
 interface SalaListProps {
   pavilhao: string;
@@ -24,12 +19,14 @@ export const SalaList: React.FC<SalaListProps> = ({ pavilhao, salas }) => {
             <div key={sala.id} className="p-4 border rounded-lg shadow">
               <div className="flex flex-row">
                 <h3 className="text-lg font-semibold"> Sala {sala.nome} </h3>
-                <StatusDot color={sala.status_atual ? 'green' : 'red'} />
+                <StatusDot color={sala.presenca ? 'green' : 'red'} />
               </div>
               <p>Andar: {sala.andar}</p>
+              <p>Temperatura: {sala.temperatura ? `${sala.temperatura}°C` : 'Sem dados'}</p>
                 <button className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                   Exibir detalhes
                 </button>
+                <AutomaticModeButton salaId={sala.id} currentMode={sala.modo_automatico}/>
             </div>
           ))}
         </div>

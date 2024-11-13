@@ -1,14 +1,10 @@
 // components/FilterMenu.tsx
 import React from 'react';
+import { Sala } from '../api/sala';
 
 interface Pavilhao {
   pavilhao: string;
-  salas: Array<{
-    id: number;
-    nome: string;
-    andar: number;
-    status_atual: boolean;
-  }>;
+  salas: Sala[];
 }
 
 interface FilterMenuProps {
