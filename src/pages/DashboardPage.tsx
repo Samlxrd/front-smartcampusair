@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { fetchSalas, Pavilhao } from '../api/sala';
+import React, { useEffect, useState } from 'react';
+import { Pavilhao, useSalas } from '../api/sala';
 import { FilterMenu } from '../components/filter-menu';
 import { SalaList } from '../components/sala-list';
 import { ActionMenu } from '../components/action-menu';
@@ -11,10 +10,17 @@ export const DashboardPage: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const { data: pavilhoes = [], isLoading, error } = useQuery<Pavilhao[]>({
-    queryKey: ['salas'],
-    queryFn: fetchSalas
-  });
+  const { data: pavilhoes = [], isLoading, error } = useSalas();
+
+  useEffect(() => {
+    if (selectedPavilhao) {
+      const updatedPavilhao = pavilhoes.find(p => p.pavilhao === selectedPavilhao.pavilhao);
+      if (updatedPavilhao && JSON.stringify(updatedPavilhao) !== JSON.stringify(selectedPavilhao)) {
+        setSelectedPavilhao(updatedPavilhao);
+      }
+    }
+  }, [pavilhoes, selectedPavilhao]);
+
 
   const handleSelectPavilhao = (pavilhao: Pavilhao) => {
     setSelectedPavilhao(pavilhao);
